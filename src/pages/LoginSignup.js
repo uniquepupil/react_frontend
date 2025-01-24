@@ -63,16 +63,14 @@ const LoginSignup = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.message === 'Login successful.') {
-          // Store token and email in localStorage
+          // Store token in localStorage
           localStorage.setItem('isAuthenticated', 'true');
           localStorage.setItem('token', data.access_token);
-          if (email) {
-            localStorage.setItem('userEmail', email);
-            console.log('User Email:', email); // Log email
-
-          } else {
-            console.error('Email is missing in the response:', data);
-          }
+  
+          // Store name, mobile number, and email from the backend response
+          localStorage.setItem('userName', data.user.name);
+          localStorage.setItem('userMobile_number', data.user.mobile_number);
+          localStorage.setItem('userEmail', data.user.email);
   
           // Navigate to the main page
           navigate('/main');

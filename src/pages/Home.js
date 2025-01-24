@@ -5,6 +5,8 @@ import "../styles/card.css";
 import Footer from '../components/footer';
 import RecentReturns from '../components/RecentReturns';
 import RecentFound from '../components/RecentFound';
+import RecentLostItems from '../components/RecentLostItem';
+
 //import LostItemForm from './LostItemForm';
 
 const Home = () => {
@@ -169,6 +171,7 @@ const Home = () => {
       </div>
     </div>
 {/* 5th row */}
+<RecentLostItems/>
 <RecentReturns/>
 <RecentFound/>
   {/* 6th row */}

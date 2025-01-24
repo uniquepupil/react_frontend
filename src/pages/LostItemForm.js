@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/style.css';
 import "../styles/card.css";
 import RecentReturns from '../components/RecentReturns';
@@ -6,85 +6,63 @@ import RecentFound from '../components/RecentFound';
 import Navbar from '../components/navbar';
 
 const LostFoundForm = () => {
-  const centerStyle = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    marginBottom: '40px',
-    padding: '25px 20px 14px 20px',
-  };
+  const [location, setLocation] = useState('');
+  const [lostItemName, setLostItemName] = useState('');
+  const [description, setDescription] = useState('');
+  const [dateLost, setDateLost] = useState('');
+  const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
-  const leftCardStyle = {
-    borderRadius: "10px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-    backgroundColor: 'black',
-    padding: '25px 90px 14px 90px',
-  };
-
-  const rowfirst = {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    marginTop: '20px',
-    width: '100%',
-  };
-
-  const columnfirst = {
-    flex: '1 1 50%',
-    padding: '20px',
-  };
-
-  const formTitle = {
-    fontSize: '1.5rem',
-    fontWeight: 'bold',
-    marginBottom: '10px',
-  };
-
-  const formGroup = {
-    marginBottom: '20px',
-  };
-
-  const labelStyle = {
-    fontWeight: 'bold',
-    marginBottom: '8px',
-    display: 'block',
-  };
-
-  const inputStyle = {
-    width: '100%',
-    padding: '5px 40px',
-    borderRadius: '8px',
-    border: '1px solid #ccc',
-    transition: 'border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-    marginBottom: '10px',
-    fontSize: '1rem',
-  };
-
-  const buttonStyle = {
-    padding: '14px 26px',
-    borderRadius: '8px',
-    border: 'none',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease-in-out, transform 0.2s ease-in-out',
-  };
-
-  const imageStyle1 = {
-    width: '400%',
-    maxWidth: '400px',
-    borderRadius: '8px',
-  };
   const handleSignOut = () => {
     console.log("Signing out...");
     localStorage.removeItem('authToken'); // Clear auth token
     window.location.href = '/'; // Redirect to login page
+  };
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage(null);
+
+    const formData = new FormData();
+    formData.append('name', localStorage.getItem('userName') || '');
+    formData.append('mobile_number', localStorage.getItem('userMobile_number') || '');
+    formData.append('location', location);
+    formData.append('lost_item_name', lostItemName);
+    formData.append('description', description);
+    formData.append('date_lost', new Date(dateLost).toLocaleDateString('en-GB'));
+
+    if (image) {
+      formData.append('image', image);
+    } else {
+      console.warn("No image provided.");
+    }
+    
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/submit-lost-item/', {
+        method: 'POST',
+        body: formData,
+      });
+      console.log("FormData being sent:", Object.fromEntries(formData.entries()));
+
+
+      const data = await response.json();
+      if (response.ok) {
+        setMessage({ type: 'success', text: data.message });
+      } else {
+        setMessage({ type: 'error', text: data.error });
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'An error occurred. Please try again later.' });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -92,94 +70,99 @@ const LostFoundForm = () => {
       <Navbar onSignOut={handleSignOut} />
 
       <div>
-        <div style={rowfirst}>
-          {/* Left Column with Card */}
-          <div style={columnfirst}>
-            <div
-              className="one col-lg-6 col-md-3 col-12 w-50 m-2 align-items-center lost-found-card"
-              style={leftCardStyle}
-            >
-              <h5 style={formTitle}>Lost Item Report</h5>
-              <form id="lostItemForm">
-                <div style={formGroup}>
-                  <label style={labelStyle} htmlFor="location">Where It Was Lost:</label>
+        <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginTop: '20px' }}>
+          {/* Left Column */}
+          <div style={{ flex: '1 1 50%', padding: '20px' }}>
+            <div className="lost-found-card" style={{ borderRadius: '10px', padding: '25px 20px', backgroundColor: 'black' }}>
+              <h5 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '10px', color: 'white' }}>Lost Item Report</h5>
+              <form onSubmit={handleSubmit}>
+                <div style={{ marginBottom: '20px' }}>
+                  <label htmlFor="location" style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px', color: 'white' }}>Where It Was Lost:</label>
                   <input
-                    style={inputStyle}
                     type="text"
                     id="location"
-                    name="location"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
                     required
                     placeholder="Enter the location"
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
                   />
                 </div>
 
-                <div style={formGroup}>
-                  <label style={labelStyle} htmlFor="lostItemName">Lost Item:</label>
+                <div style={{ marginBottom: '20px' }}>
+                  <label htmlFor="lostItemName" style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px', color: 'white' }}>Lost Item:</label>
                   <input
-                    style={inputStyle}
                     type="text"
                     id="lostItemName"
-                    name="lostItemName"
+                    value={lostItemName}
+                    onChange={(e) => setLostItemName(e.target.value)}
                     required
                     placeholder="Enter the lost item"
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
                   />
                 </div>
 
-                <div style={formGroup}>
-                  <label style={labelStyle} htmlFor="description">Description:</label>
+                <div style={{ marginBottom: '20px' }}>
+                  <label htmlFor="description" style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px', color: 'white' }}>Description:</label>
                   <textarea
-                    style={inputStyle}
                     id="description"
-                    name="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     required
                     placeholder="Describe the lost item"
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
                   ></textarea>
                 </div>
 
-                <div style={formGroup}>
-                  <label style={labelStyle} htmlFor="dateLost">Date When Lost:</label>
+                <div style={{ marginBottom: '20px' }}>
+                  <label htmlFor="dateLost" style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px', color: 'white' }}>Date When Lost:</label>
                   <input
-                    style={inputStyle}
                     type="date"
                     id="dateLost"
-                    name="dateLost"
+                    value={dateLost}
+                    onChange={(e) => setDateLost(e.target.value)}
                     required
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
                   />
                 </div>
 
-                {/* New Upload Button */}
-                <div style={formGroup}>
-                  <label style={labelStyle} htmlFor="uploadImage">Upload an Image:</label>
+                <div style={{ marginBottom: '20px' }}>
+                  <label htmlFor="uploadImage" style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px', color: 'white' }}>Upload an Image:</label>
                   <input
-                    style={inputStyle}
                     type="file"
                     id="uploadImage"
-                    name="uploadImage"
                     accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ width: '100%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
                   />
                 </div>
 
-                <button type="submit" style={buttonStyle}>
-                  Submit
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  style={{ padding: '10px 20px', borderRadius: '8px', backgroundColor: '#007bff', color: 'white', cursor: 'pointer' }}
+                >
+                  {isLoading ? 'Submitting...' : 'Submit'}
                 </button>
+
+                {message && (
+                  <p style={{ color: message.type === 'success' ? 'green' : 'red', marginTop: '10px' }}>{message.text}</p>
+                )}
               </form>
             </div>
           </div>
 
-          {/* Right Column with Image */}
-          <div style={columnfirst}>
-            <div style={centerStyle}>
+          {/* Right Column */}
+          <div style={{ flex: '1 1 50%', padding: '20px' }}>
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
               <h1>Report a Lost Item</h1>
             </div>
-            <img
-              src="/images/lost.png"
-              alt="Lost and Found"
-              style={imageStyle1}
-            />
+            <img src="/images/lost.png" alt="Lost and Found" style={{ width: '100%', maxWidth: '400px', borderRadius: '8px' }} />
           </div>
         </div>
       </div>
-      <div style={{}}>
+
+      <div>
         <RecentReturns />
         <RecentFound />
       </div>
@@ -188,9 +171,3 @@ const LostFoundForm = () => {
 };
 
 export default LostFoundForm;
-
-// const rr={
-
-// }
-
-// export default LostFoundForm;

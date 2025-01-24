@@ -114,6 +114,7 @@ const UserAccount = ({ onSignOut }) => {
     const token = localStorage.getItem('token');
     const email = localStorage.getItem('userEmail');
 
+
     if (token && email) {
       fetch(`http://127.0.0.1:8000/user-details/?email=${email}`, {
         method: 'GET',
