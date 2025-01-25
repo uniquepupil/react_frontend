@@ -98,6 +98,7 @@
 
 
 import React, { useState, useEffect } from 'react';
+import Navbar from '../components/navbar';
 
 const UserAccount = ({ onSignOut }) => {
   const [user, setUser] = useState({
@@ -199,7 +200,9 @@ const UserAccount = ({ onSignOut }) => {
   
 
   return (
+    
     <div className="user-account" style={{ marginTop: '70px', padding: '20px' }}>
+      <Navbar/>
       <h2>User Account</h2>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {/* Profile Picture */}

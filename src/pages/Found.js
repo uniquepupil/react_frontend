@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/style.css';
 import "../styles/card.css";
 import RecentReturns from '../components/RecentReturns';
-import RecentFound from '../components/RecentFound';
+import RecentFound from '../components/RecentFoundItem';
 import Navbar from '../components/navbar';
 
 const Found = () => {

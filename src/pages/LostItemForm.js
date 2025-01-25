@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import '../styles/style.css';
 import "../styles/card.css";
 import RecentReturns from '../components/RecentReturns';
-import RecentFound from '../components/RecentFound';
+import RecentFound from '../components/RecentFoundItem';
 import Navbar from '../components/navbar';
+import RecentLostItems from '../components/RecentLostItem';
 
 const LostFoundForm = () => {
   const [location, setLocation] = useState('');
@@ -73,8 +74,8 @@ const LostFoundForm = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', marginTop: '20px' }}>
           {/* Left Column */}
           <div style={{ flex: '1 1 50%', padding: '20px' }}>
-            <div className="lost-found-card" style={{ borderRadius: '10px', padding: '25px 20px', backgroundColor: 'black' }}>
-              <h5 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '10px', color: 'white' }}>Lost Item Report</h5>
+            <div className="lost-found-card" style={{ borderRadius: '10px', padding: '50px 0px 20px 100px', backgroundColor: 'black' }}>
+              {/* <h5 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '10px', color: 'white' }}>Lost Item Report</h5> */}
               <form onSubmit={handleSubmit}>
                 <div style={{ marginBottom: '20px' }}>
                   <label htmlFor="location" style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px', color: 'white' }}>Where It Was Lost:</label>
@@ -85,7 +86,7 @@ const LostFoundForm = () => {
                     onChange={(e) => setLocation(e.target.value)}
                     required
                     placeholder="Enter the location"
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
+                    style={{ width: '80%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
                   />
                 </div>
 
@@ -98,7 +99,7 @@ const LostFoundForm = () => {
                     onChange={(e) => setLostItemName(e.target.value)}
                     required
                     placeholder="Enter the lost item"
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
+                    style={{ width: '80%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
                   />
                 </div>
 
@@ -110,7 +111,7 @@ const LostFoundForm = () => {
                     onChange={(e) => setDescription(e.target.value)}
                     required
                     placeholder="Describe the lost item"
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
+                    style={{ width: '80%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
                   ></textarea>
                 </div>
 
@@ -122,7 +123,7 @@ const LostFoundForm = () => {
                     value={dateLost}
                     onChange={(e) => setDateLost(e.target.value)}
                     required
-                    style={{ width: '100%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
+                    style={{ width: '80%', padding: '10px', borderRadius: '8px', marginBottom: '10px' }}
                   />
                 </div>
 
@@ -153,17 +154,33 @@ const LostFoundForm = () => {
           </div>
 
           {/* Right Column */}
-          <div style={{ flex: '1 1 50%', padding: '20px' }}>
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-              <h1>Report a Lost Item</h1>
-            </div>
-            <img src="/images/lost.png" alt="Lost and Found" style={{ width: '100%', maxWidth: '400px', borderRadius: '8px' }} />
-          </div>
+          <div style={{ 
+  display: 'flex', 
+  justifyContent: 'center', 
+  alignItems: 'center', 
+  flexDirection: 'column', 
+  flex: '1 1 40%', 
+  padding: '20px' 
+}}>
+  <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+    <h1>Report a Lost Item</h1>
+  </div>
+  <img 
+    src="/images/lost.png" 
+    alt="Lost and Found" 
+    style={{ 
+      width: '100%', 
+      maxWidth: '400px', 
+      borderRadius: '8px' 
+    }} 
+  />
+</div>
+
         </div>
       </div>
 
       <div>
-        <RecentReturns />
+
         <RecentFound />
       </div>
     </div>

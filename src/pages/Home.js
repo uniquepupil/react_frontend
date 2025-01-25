@@ -4,7 +4,7 @@ import '../styles/style.css';
 import "../styles/card.css";
 import Footer from '../components/footer';
 import RecentReturns from '../components/RecentReturns';
-import RecentFound from '../components/RecentFound';
+import RecentFound from '../components/RecentFoundItem';
 import RecentLostItems from '../components/RecentLostItem';
 
 //import LostItemForm from './LostItemForm';

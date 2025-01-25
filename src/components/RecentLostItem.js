@@ -89,12 +89,13 @@ const RecentLostItems = () => {
   useEffect(() => {
     const fetchLostItems = async () => {
       try {
-        const response = await fetch("/api/recent-lost-items"); // Replace with your API endpoint
+        const response = await fetch("http://127.0.0.1:8000/recent-lost-items/");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
+        
         const data = await response.json();
-        setItems(data);
+        setItems(data.recent_lost_items);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -126,18 +127,30 @@ const RecentLostItems = () => {
           {items.map((item) => (
             <div key={item.id} style={cardStyle}>
               <img
-                src={item.image || "/images/default-placeholder.png"} // Default placeholder
-                alt={item.lost_item_name}
-                style={cardImgStyle}
-              />
+  src={item.image ? `http://127.0.0.1:8000/${item.image}` : "/images/car.jpg"}
+  
+  alt={item.lost_item_name}
+  style={cardImgStyle}
+/>
+
+
               <div style={cardBodyStyle}>
                 <h5 style={cardTitleStyle}>{item.lost_item_name}</h5>
                 <p>Reported By: <strong>{item.name}</strong></p>
                 <p>Location: {item.location}</p>
               </div>
               <div style={cardFooterStyle}>
-                <small>Date Lost: {new Date(item.date_lost).toLocaleDateString()}</small>
-              </div>
+  <small>
+    Date Lost:{" "}
+    {item.date_lost
+      ? (() => {
+          const [day, month, year] = item.date_lost.split("/"); // Split the string
+          return `${day}/${month}/${year}`; // Ensure correct format is displayed
+        })()
+      : "NA"}
+  </small>
+</div>
+
             </div>
           ))}
         </div>

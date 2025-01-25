@@ -40,6 +40,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Found from './pages/Found'; // Assuming this is your Found page
 import UserAccount from './pages/UserAccount'; // Assuming this is your UserAccount page
 import LoginPage from './pages/LoginPage'; // Assuming you have a LoginPage
+import RecentLostItems from './pages/recentlost';
 
 function App() {
   return (
@@ -82,6 +83,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+          
       </Routes>
     </Router>
   );

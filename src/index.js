@@ -8,6 +8,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LostItemForm from './pages/LostItemForm';
 import Found from './pages/Found';
 import UserAccount from './pages/UserAccount';
+import RecentLostItems from './pages/recentlost';
+import FoundItemForm from './pages/FoundItemForm';
 
 // import Profile from './pages/profile';
 
@@ -40,10 +42,11 @@ ReactDOM.render(
           path="/main/found"
           element={
             <ProtectedRoute>
-              <Found/>
+              <FoundItemForm/>
             </ProtectedRoute>
           }
         />
+      
                 <Route
           path="/profile"
           element={

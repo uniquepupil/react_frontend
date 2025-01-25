@@ -63,7 +63,9 @@ const LoginSignup = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.message === 'Login successful.') {
+          alert('Login successful')
           // Store token in localStorage
+          
           localStorage.setItem('isAuthenticated', 'true');
           localStorage.setItem('token', data.access_token);
   
