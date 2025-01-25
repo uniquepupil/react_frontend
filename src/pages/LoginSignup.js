@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/style.css';
+import { mainURL } from '../services/services';
 
 const LoginSignup = () => {
   const navigate = useNavigate();
@@ -12,38 +13,7 @@ const LoginSignup = () => {
   };
   
 
-  // const submitLoginForm = () => {
-  //   const email = document.getElementById('login-username').value;
-  //   const password = document.getElementById('login-password').value;
-  //   const csrfToken = getCSRFToken();
 
-  //   if (!email || !password) {
-  //     alert('Please fill in all fields.');
-  //     return;
-  //   }
-
-  //   const data = { email, password };
-
-  //   fetch('http://127.0.0.1:8000/login/', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     'X-CSRFToken': csrfToken,
-  //     //credentials: 'include', // Important for cookies
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       if (data.message === 'Login successful.') {
-  //         localStorage.setItem('isAuthenticated', 'true');
-  //         navigate('/main');
-  //       } else {
-  //         alert('Login failed: ' + (data.error || 'Unknown error'));
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       alert('Error: ' + error);
-  //     });
-  // };
   const submitLoginForm = () => {
     const email = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
@@ -54,8 +24,8 @@ const LoginSignup = () => {
     }
   
     const data = { email, password };
-  
-    fetch('http://127.0.0.1:8000/login/', {
+  console.log(`${mainURL}login/`);
+    fetch(`${mainURL}login/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -89,7 +59,7 @@ const LoginSignup = () => {
 
   const submitSignupForm = () => {
     const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password1').value; // Assuming password1 is used
+    const password = document.getElementById('signup-password1').value; 
     const name = document.getElementById('signup-username').value;
     const mobile_number = document.getElementById('signup-phone').value;
   
@@ -100,7 +70,7 @@ const LoginSignup = () => {
       mobile_number,
     };
   
-    fetch('http://127.0.0.1:8000/signup/', {
+    fetch('http://3.82.186.14:8000/signup/', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -112,7 +82,7 @@ const LoginSignup = () => {
       .then((data) => {
         if (data.message === 'User created successfully!') {
           alert('Signup successful! You can now log in.');
-          setIsSignup(false); // Switch to login form after successful signup
+          setIsSignup(false); 
         } else {
           alert('Signup failed: ' + data.errors);
         }

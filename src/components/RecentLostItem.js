@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { mainURL } from "../services/services";
 
 const RecentLostItems = () => {
   const [items, setItems] = useState([]);
@@ -89,7 +90,7 @@ const RecentLostItems = () => {
   useEffect(() => {
     const fetchLostItems = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/recent-lost-items/");
+        const response = await fetch('http://3.82.186.14:8000/recent-lost-items/');
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -127,7 +128,7 @@ const RecentLostItems = () => {
           {items.map((item) => (
             <div key={item.id} style={cardStyle}>
               <img
-  src={item.image ? `http://127.0.0.1:8000/${item.image}` : "/images/car.jpg"}
+  src={item.image ? `${mainURL}${item.image}` : "/images/car.jpg"}
   
   alt={item.lost_item_name}
   style={cardImgStyle}

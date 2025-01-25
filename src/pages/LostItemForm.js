@@ -5,6 +5,7 @@ import RecentReturns from '../components/RecentReturns';
 import RecentFound from '../components/RecentFoundItem';
 import Navbar from '../components/navbar';
 import RecentLostItems from '../components/RecentLostItem';
+import { mainURL } from '../services/services';
 
 const LostFoundForm = () => {
   const [location, setLocation] = useState('');
@@ -46,7 +47,7 @@ const LostFoundForm = () => {
     
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/submit-lost-item/', {
+      const response = await fetch('http://3.82.186.14:8000/submit-lost-item/', {
         method: 'POST',
         body: formData,
       });

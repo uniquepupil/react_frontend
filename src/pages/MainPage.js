@@ -4,6 +4,7 @@ import Navbar from '../components/navbar';
 import Profile from '../components/Profile';
 import Home from './Home';
 import Footer from '../components/footer';
+import { mainURL } from '../services/services';
 
 const MainPage = () => {
   const navigate = useNavigate();

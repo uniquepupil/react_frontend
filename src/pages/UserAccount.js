@@ -1,104 +1,6 @@
-// import React, { useState, useEffect } from 'react';
-
-// const UserAccount = ({ onSignOut }) => {
-//   const [user, setUser] = useState({
-//     username: '',
-//     email: '',
-//     mobile: '',
-//     profilePicture: '',
-//   });
-
-//   useEffect(() => {
-//     const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-//     const email = localStorage.getItem('userEmail'); // Retrieve the email from localStorage
-
-//     if (token && email) {
-//       fetch(`http://127.0.0.1:8000/user-details/?email=${email}`, {
-//         method: 'GET',
-//         headers: {
-//           'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
-//           'Content-Type': 'application/json', // Optional but good practice
-//         },
-//       })
-//         .then((response) => {
-//           if (!response.ok) {
-//             throw new Error('Failed to fetch user details');
-//           }
-//           return response.json();
-//         })
-//         .then((data) => {
-//           if (data.error) {
-//             console.error(data.error);
-//           } else {
-//             setUser({
-//               username: data.name,
-//               email: data.email,
-//               mobile: data.mobile_number,
-//               profilePicture: data.profile_picture || 'https://via.placeholder.com/150',
-//             });
-//           }
-//         })
-//         .catch((error) => console.error('Error fetching user details:', error));
-//     } else {
-//       console.log('No token or email found. Please log in first.');
-//     }
-//   }, []);
-
-//   return (
-//     <div className="user-account" style={{ marginTop: '70px', padding: '20px' }}>
-//       <h2>User Account</h2>
-//       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-//         {/* Profile Picture */}
-//         <div>
-//           <img
-//             src={user.profilePicture}
-//             alt="Profile"
-//             style={{ borderRadius: '50%', width: '150px', height: '150px', objectFit: 'cover' }}
-//           />
-//         </div>
-
-//         {/* Username */}
-//         <div style={{ marginTop: '20px' }}>
-//           <label>Name: </label>
-//           <input
-//             type="text"
-//             value={user.username}
-//             readOnly
-//             style={{ backgroundColor: '#f5f5f5', border: 'none' }}
-//           />
-//         </div>
-
-//         {/* Email */}
-//         <div style={{ marginTop: '10px' }}>
-//           <label>Email: </label>
-//           <input
-//             type="email"
-//             value={user.email}
-//             readOnly
-//             style={{ backgroundColor: '#f5f5f5', border: 'none' }}
-//           />
-//         </div>
-
-//         {/* Mobile Number */}
-//         <div style={{ marginTop: '10px' }}>
-//           <label>Mobile: </label>
-//           <input
-//             type="text"
-//             value={user.mobile}
-//             readOnly
-//             style={{ backgroundColor: '#f5f5f5', border: 'none' }}
-//           />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default UserAccount;
-
-
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/navbar';
+import { mainURL } from '../services/services';
 
 const UserAccount = ({ onSignOut }) => {
   const [user, setUser] = useState({
@@ -117,7 +19,7 @@ const UserAccount = ({ onSignOut }) => {
 
 
     if (token && email) {
-      fetch(`http://127.0.0.1:8000/user-details/?email=${email}`, {
+      fetch(`${mainURL}user-details/?email=${email}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -132,7 +34,7 @@ const UserAccount = ({ onSignOut }) => {
         })
         .then((data) => {
           if (!data.error) {
-            const profilePicture = data.profile_picture || 'https://via.placeholder.com/150';
+            const profilePicture = data.profile_picture || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
             setUser({
               username: data.name,
               email: data.email,
@@ -175,7 +77,7 @@ const UserAccount = ({ onSignOut }) => {
       formData.append('profile_picture', updatedUser.profilePicture);
     }
   
-    fetch('http://127.0.0.1:8000/update-profile/?email=' + user.email, {
+    fetch('${mainURL}update-profile/?email=' + user.email, {
       method: 'PATCH',
       headers: {
         // 'Authorization': `Bearer ${token}`,
