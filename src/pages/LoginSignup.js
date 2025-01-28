@@ -25,7 +25,7 @@ const LoginSignup = () => {
   
     const data = { email, password };
   console.log(`${mainURL}login/`);
-    fetch(`http://3.82.186.14:8000/login/`, {
+    fetch(`http://172.31.92.72/login/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -70,7 +70,7 @@ const LoginSignup = () => {
       mobile_number,
     };
   
-    fetch('http://3.82.186.14:8000/signup/', {
+    fetch('http://172.31.92.72/signup/', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',

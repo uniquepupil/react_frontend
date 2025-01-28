@@ -90,7 +90,7 @@ const RecentLostItems = () => {
   useEffect(() => {
     const fetchLostItems = async () => {
       try {
-        const response = await fetch("http://3.82.186.14:8000/recent-lost-items/");
+        const response = await fetch("http://172.31.92.72/recent-lost-items/");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }

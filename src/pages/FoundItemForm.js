@@ -46,7 +46,7 @@ const FoundItemForm = () => {
     
 
     try {
-      const response = await fetch('http://3.82.186.14:8000/submit-found-item/', {
+      const response = await fetch('http://172.31.92.72/submit-found-item/', {
         method: 'POST',
         body: formData,
       });
