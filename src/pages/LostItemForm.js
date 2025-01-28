@@ -47,7 +47,7 @@ const LostFoundForm = () => {
     
 
     try {
-      const response = await fetch('http://172.31.92.72/submit-lost-item/', {
+      const response = await fetch('http://3.82.186.14:8000/submit-lost-item/', {
         method: 'POST',
         body: formData,
       });
