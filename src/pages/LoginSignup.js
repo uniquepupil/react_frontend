@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/style.css';
-import { mainURL } from '../services/services';
 
 const LoginSignup = () => {
   const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
+  const [showAlert, setShowAlert] = useState(true);
+  const [showImage, setShowImage] = useState(true); 
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setShowImage(window.innerWidth > 768); // Hide image if screen width is <= 768px
+    };
 
-  const validateMobileNumber = (mobile_number) => {
-    return /^[0-9]{10}$/.test(mobile_number);
-  };
+    handleResize(); // Check on first render
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const validateEmail = (email) => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+  const validateMobileNumber = (mobile_number) => /^[0-9]{10}$/.test(mobile_number);
 
   const submitLoginForm = () => {
     const email = document.getElementById('login-username').value;
@@ -25,12 +30,10 @@ const LoginSignup = () => {
       return;
     }
 
-    const data = { email, password };
-
-    fetch(`http://3.82.186.14:8000/login/`, {
+    fetch('http://3.82.186.14:8000/login/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ email, password }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -50,6 +53,14 @@ const LoginSignup = () => {
         alert('Error: ' + error);
       });
   };
+  const copyToClipboard = () => {
+    const textToCopy = "Email: contact@uniquepupil.info Password: @Admin123";
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => alert("Text copied!   Email: contact@uniquepupil.info                      Password: @Admin123"))
+      .catch((err) => console.error("Copy failed:", err));
+  };
+ 
+
 
   const submitSignupForm = () => {
     const email = document.getElementById('signup-email').value;
@@ -73,12 +84,10 @@ const LoginSignup = () => {
       return;
     }
 
-    const data = { email, password, name, mobile_number };
-
     fetch('http://3.82.186.14:8000/signup/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ email, password, name, mobile_number }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -94,73 +103,124 @@ const LoginSignup = () => {
       });
   };
 
-  return (
-    <div>
-      <div className="heading">Army Institute of Technology</div>
-      <div className="container">
-        <div className="forms">
-          <div className="form-content">
-            {!isSignup && (
-              <div className="login-form">
-                <div className="title">Login</div>
-                <form id="login-form">
-                  <div className="input-boxes">
-                    <div className="input-box">
-                      <i className="fas fa-envelope"></i>
-                      <input type="text" id="login-username" placeholder="Enter your email" required />
-                    </div>
-                    <div className="input-box">
-                      <i className="fas fa-lock"></i>
-                      <input type="password" id="login-password" placeholder="Enter your password" required />
-                    </div>
-                    <div className="button input-box">
-                      <input type="button" value="Login" onClick={submitLoginForm} />
-                    </div>
-                    <div className="text sign-up-text">
-                      Don't have an account? <label onClick={() => setIsSignup(true)}>Sign up now</label>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            )}
+  const styles = {
+    container: {
+      display: 'flex',
+      justifyContent: showImage ? 'center' : 'center',
+      alignItems: 'center',
+      height: '100vh',
+      //backgroundColor: '#f5f5f5',
+    },
+   formContainer: {
+      backgroundColor: '#363f41  ',
+      padding: '30px',
+      borderRadius: '8px',
+      boxShadow: '0px 0px 10px rgba(0,0,0,0.1)',
+      width: '350px',
+      textAlign: 'center',
+    },
+    imageContainer: {
+      marginRight: '40px',
+      width: '600px',
+      height: '600px',
+    },
+    imageStyle: { width: '600px', height: '600px', borderRadius: '10px', display: showImage ? 'block' : 'none' }, // Hide image if showImage is false
+    
+    inputBox: {
+      marginBottom: '15px',
+    },
+    input: {
+      width: '100%',
+      padding: '10px',
+      border: '1px solid #ccc',
+      borderRadius: '5px',
+      fontSize: '16px',
+    },
+    button: {
+      width: '100%',
+      padding: '10px',
+      backgroundColor: '#007bff',
+      color: '#fff',
+      border: 'none',
+      borderRadius: '5px',
+      cursor: 'pointer',
+      fontSize: '16px',
+    },
+    switchText: {
+      marginTop: '10px',
+      color: '#007bff',
+      cursor: 'pointer',
+      textDecoration: 'underline',
+    },
+    switchTextt: {
+      marginTop: '10px',
+      color: 'white',
+      cursor: 'pointer',
+      textDecoration: 'bold',
+    },
+    alertOverlay: { position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center' },
+    alertBox: { backgroundColor: '#fff', padding: '20px', borderRadius: '10px', textAlign: 'center', boxShadow: '0px 4px 10px rgba(0,0,0,0.2)', width: '300px' },
+    copyButton: { margin: '10px', padding: '8px 15px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' },
+    closeButton: { margin: '10px', padding: '8px 15px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' },
+  
+  };
 
-            {isSignup && (
-              <div className="signup-form">
-                <div className="title">Signup</div>
-                <form id="signup-form">
-                  <div className="input-boxes">
-                    <div className="input-box">
-                      <i className="fas fa-user"></i>
-                      <input type="text" id="signup-username" placeholder="Enter your name" required />
-                    </div>
-                    <div className="input-box">
-                      <i className="fas fa-envelope"></i>
-                      <input type="email" id="signup-email" placeholder="Enter your email" required />
-                    </div>
-                    <div className="input-box">
-                      <i className="fas fa-phone"></i>
-                      <input type="text" id="signup-phone" placeholder="Enter your phone number" required />
-                    </div>
-                    <div className="input-box">
-                      <i className="fas fa-lock"></i>
-                      <input type="password" id="signup-password1" placeholder="Enter your password" required />
-                    </div>
-                    <div className="input-box">
-                      <i className="fas fa-lock"></i>
-                      <input type="password" id="signup-password2" placeholder="Confirm your password" required />
-                    </div>
-                    <div className="button input-box">
-                      <input type="button" value="Signup" onClick={submitSignupForm} />
-                    </div>
-                    <div className="text sign-up-text">
-                      Already have an account? <label onClick={() => setIsSignup(false)}>Login now</label>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            )}
+  return (
+    <div style={styles.container}>
+       {/* Custom Alert */}
+       {showAlert && (
+        <div style={styles.alertOverlay}>
+          <div style={styles.alertBox}>
+            <p>Welcome! <br></br>
+            For demo purpose <br></br>
+          Email: contact@uniquepupil.info<br></br>
+          Password: @Admin123</p>
+            <button onClick={copyToClipboard} style={styles.copyButton}>Copy</button>
+            <button onClick={() => setShowAlert(false)} style={styles.closeButton}>OK</button>
           </div>
         </div>
+      )}
+      {/* Image Container */}
+      <div style={styles.imageContainer}>
+        <img src="images/lost-and-found.png" alt="Login Illustration" style={styles.imageStyle} />
+      </div>
+
+      {/* Form Container */}
+      <div style={styles.formContainer}>
+        {!isSignup ? (
+          <div>
+            <h2 style={styles.switchTextt}>Login</h2>
+            <div style={styles.inputBox}>
+              <input type="text" id="login-username" placeholder="Enter your email" required style={styles.input} />
+            </div>
+            <div style={styles.inputBox}>
+              <input type="password" id="login-password" placeholder="Enter your password" required style={styles.input} />
+            </div>
+            <button onClick={submitLoginForm} style={styles.button}>Login</button>
+            <p style={styles.switchText} onClick={() => setIsSignup(true)}>Don't have an account?<br></br> Sign up now</p>
+          </div>
+        ) : (
+          <div>
+            <h2 style={styles.switchTextt}>Signup</h2>
+            <div style={styles.inputBox}>
+              <input type="text" id="signup-username" placeholder="Enter your name" required style={styles.input} />
+            </div>
+            <div style={styles.inputBox}>
+              <input type="email" id="signup-email" placeholder="Enter your email" required style={styles.input} />
+            </div>
+            <div style={styles.inputBox}>
+              <input type="text" id="signup-phone" placeholder="Enter your phone number" required style={styles.input} />
+            </div>
+            <div style={styles.inputBox}>
+              <input type="password" id="signup-password1" placeholder="Enter your password" required style={styles.input} />
+            </div>
+            <div style={styles.inputBox}>
+              <input type="password" id="signup-password2" placeholder="Confirm your password" required style={styles.input} />
+            </div>
+            <button onClick={submitSignupForm} style={styles.button}>Signup</button>
+            <p style={styles.switchText} onClick={() => setIsSignup(false)}>Already have an account?<br></br> Login now</p>
+          </div>
+        )}
       </div>
     </div>
   );
