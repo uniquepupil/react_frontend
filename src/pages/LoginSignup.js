@@ -198,7 +198,7 @@ const LoginSignup = () => {
       <div style={styles.formContainer}>
         {!isSignup ? (
           <div>
-            <h2 style={styles.switchTextt}>Login</h2>
+            <h2 style={styles.switchTextt}>Login</h2><br></br>
             <div style={styles.inputBox}>
               <input type="text" id="login-username" placeholder="Enter your email" required style={styles.input} />
             </div>
@@ -210,7 +210,7 @@ const LoginSignup = () => {
           </div>
         ) : (
           <div>
-            <h2 style={styles.switchTextt}>Signup</h2>
+            <h2 style={styles.switchTextt}>Signup</h2><br></br>
             <div style={styles.inputBox}>
               <input type="text" id="signup-username" placeholder="Enter your name" required style={styles.input} />
             </div>
