@@ -34,7 +34,10 @@ const UserAccount = ({ onSignOut }) => {
         })
         .then((data) => {
           if (!data.error) {
-            const profilePicture = data.profile_picture || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+            const defaultProfilePicture = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+            const customProfilePicture = 'https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg';
+          
+            const profilePicture = data.email === 'contact@uniquepupil.info' ? customProfilePicture : (data.profile_picture || defaultProfilePicture);
             setUser({
               username: data.name,
               email: data.email,
@@ -58,6 +61,11 @@ const UserAccount = ({ onSignOut }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedUser((prev) => ({ ...prev, [name]: value }));
+  };
+  const handleSignOut = () => {
+    console.log("Signing out...");
+    localStorage.removeItem('authToken'); // Clear auth token
+    window.location.href = '/'; // Redirect to login page
   };
 
   const handleProfilePictureChange = (e) => {
@@ -104,7 +112,7 @@ const UserAccount = ({ onSignOut }) => {
   return (
     
     <div className="user-account" style={{ marginTop: '70px', padding: '20px' }}>
-      <Navbar/>
+      <Navbar onSignOut={handleSignOut} />
       <h2>User Account</h2>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {/* Profile Picture */}

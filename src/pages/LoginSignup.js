@@ -54,11 +54,20 @@ const LoginSignup = () => {
       });
   };
   const copyToClipboard = () => {
-    const textToCopy = "Email: contact@uniquepupil.info Password: @Admin123";
-    navigator.clipboard.writeText(textToCopy)
-      .then(() => alert("Text copied!   Email: contact@uniquepupil.info                      Password: @Admin123"))
+    const email = "contact@uniquepupil.info";
+    const password = "@Admin123";
+  
+    navigator.clipboard.writeText(`Email: ${email} Password: ${password}`)
+      .then(() => {
+        alert("Text copied! Email: contact@uniquepupil.info Password: @Admin123");
+        
+        // Auto-fill the login form fields
+        document.getElementById('login-username').value = email;
+        document.getElementById('login-password').value = password;
+      })
       .catch((err) => console.error("Copy failed:", err));
   };
+  
  
 
 
