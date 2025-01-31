@@ -32,13 +32,13 @@ const MainPage = () => {
       {showProfile && <Profile onSignOut={handleSignOut} />}
 
       {/* Main Content */}
-      <div className="content" style={{ marginTop: showProfile ? '20px' : '70px' }}>
+      {/* <div className="content" style={{ marginTop: showProfile ? '20px' : '70px' }}>
         <h1>Welcome to our website!</h1>
         <p>
           Here, you'll find a variety of services including lost & found, user
           profiles, and much more!
         </p>
-      </div>
+      </div> */}
       {/* <div className='footer'> <Footer/></div> */}
       
     </div>

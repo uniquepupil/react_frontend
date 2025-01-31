@@ -90,7 +90,7 @@ const RecentLostItems = () => {
   useEffect(() => {
     const fetchLostItems = async () => {
       try {
-        const response = await fetch('http://0.0.0.0:8000/recent-lost-items/');
+        const response = await fetch('http://3.82.186.14:8000/recent-lost-items/');
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -128,7 +128,7 @@ const RecentLostItems = () => {
           {items.map((item) => (
             <div key={item.id} style={cardStyle}>
               <img
-  src={item.image ? `http://0.0.0.0:8000/${item.image}` : "/images/car.jpg"}
+  src={item.image ? `http://172.31.92.72/${item.image}` : "/images/car.jpg"}
   
   alt={item.lost_item_name}
   style={cardImgStyle}

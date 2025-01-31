@@ -106,6 +106,12 @@ const LoginSignup = () => {
                 <div className="title">Login</div>
                 <form id="login-form">
                   <div className="input-boxes">
+                  <div className="input-box">
+     Email: user@examplee.com
+     Password: securepassword
+
+
+</div>
                     <div className="input-box">
                       <i className="fas fa-envelope"></i>
                       <input
